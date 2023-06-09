@@ -1,0 +1,47 @@
+const player = document.getElementById('player');
+const damper = document.getElementById('damper')
+const cloud = document.getElementById('cloud')
+const btn = document.querySelector('.start')
+
+let isStart = false;
+let interval;
+
+const activeJump = () => {
+  if (isStart) {
+    if (!player.classList.contains('active')) {
+      player.classList.add('active')
+    }
+
+    setTimeout(() => {
+      player.classList.remove('active')
+    }, 300)
+  }
+}
+
+const startGame = () => {
+  isStart = true;
+
+  damper.classList.add('animate');
+  cloud.classList.add('cloudeAnimation');
+
+  interval = setInterval(() => {
+    let playerTop = parseInt(window.getComputedStyle(player).getPropertyValue('top'))
+    let damperLeft = parseInt(window.getComputedStyle(damper).getPropertyValue('left'))
+    if (damperLeft < 50 && damperLeft > 0 && playerTop >= 140) {
+      endGame()
+    }
+  }, 10)
+}
+const endGame = () => {
+  isStart = false;
+  clearInterval(interval)
+  damper.classList.remove('animate');
+  cloud.classList.remove('cloudeAnimation');
+  alert('GAME OVER')
+}
+
+document.addEventListener('keydown', activeJump);
+
+btn.addEventListener('click', () => {
+  startGame()
+})
